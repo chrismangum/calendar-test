@@ -1,0 +1,71 @@
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  text-align: center;
+  font-family: sans-serif;
+}
+
+.main {
+  display: inline-block;
+  height: 800px;
+  margin: 50px 0 0;
+  min-height: 400px;
+  min-width: 700px;
+  text-align: left;
+  width: 85%;
+}
+
+.calendar {
+  border: 1px solid #ddd;
+  height: 100%;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar td {
+  border-right: 1px solid #ddd;
+  vertical-align: top;
+  padding: 0;
+}
+
+.calendar .time-label {
+  border-bottom: 1px solid #ddd;
+  height: 40px;
+  text-align: right;
+  width: 60px;
+  padding: 2px;
+  font-size: 12px;
+}
+
+.calendar .events-container {
+  width: 100%;
+  border-right: 0;
+  position: relative;
+}
+
+.calendar .event {
+  position: absolute;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.calendar .event.overlapping {
+  outline: 2px solid #fff;
+}
+
+.calendar .event p {
+  line-height: 1;
+  font-size: 11px;
+  font-weight: bold;
+  margin: 3px;
+}
+
+.calendar .event .event-description {
+  font-weight: normal;
+}
