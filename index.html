@@ -2,38 +2,20 @@
 <html ng-app="app" ng-controller="mainCtrl">
   <head>
     <title>Calendar</title>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <div class="main">
+      <p>
+        <button ng-click="addEvent()">Add Event</button>
+      </p>
       <table class="calendar">
         <tbody>
           <tr>
             <td>
-              <div class="time-label">12am</div>
-              <div class="time-label">1am</div>
-              <div class="time-label">2am</div>
-              <div class="time-label">3am</div>
-              <div class="time-label">4am</div>
-              <div class="time-label">5am</div>
-              <div class="time-label">6am</div>
-              <div class="time-label">7am</div>
-              <div class="time-label">8am</div>
-              <div class="time-label">9am</div>
-              <div class="time-label">10am</div>
-              <div class="time-label">11am</div>
-              <div class="time-label">12pm</div>
-              <div class="time-label">1pm</div>
-              <div class="time-label">2pm</div>
-              <div class="time-label">3pm</div>
-              <div class="time-label">4pm</div>
-              <div class="time-label">5pm</div>
-              <div class="time-label">6pm</div>
-              <div class="time-label">7pm</div>
-              <div class="time-label">8pm</div>
-              <div class="time-label">9pm</div>
-              <div class="time-label">10pm</div>
-              <div class="time-label">11pm</div>
+              <div class="time-label" ng-repeat="time in timeLabels">{{ time }}am</div>
+              <div class="time-label" ng-repeat="time in timeLabels">{{ time }}pm</div>
             </td>
             <td class="events-container">
               <div class="event" style="
@@ -51,5 +33,9 @@
         </tbody>
       </table>
     </div>
+    <script src="underscore.js"></script>
+    <script src="angular.js"></script>
+    <script src="ui-modal.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>

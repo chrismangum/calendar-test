@@ -6,6 +6,20 @@ html {
   box-sizing: inherit;
 }
 
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.pull-left {
+  float: left;
+}
+
+.pull-right {
+  float: right;
+}
+
 body {
   text-align: center;
   font-family: sans-serif;
@@ -14,18 +28,20 @@ body {
 .main {
   display: inline-block;
   height: 800px;
-  margin: 50px 0 0;
   min-height: 400px;
   min-width: 700px;
   text-align: left;
   width: 85%;
 }
 
+table {
+  border-collapse: collapse;
+}
+
 .calendar {
   border: 1px solid #ddd;
   height: 100%;
   width: 100%;
-  border-collapse: collapse;
 }
 
 .calendar td {
@@ -68,4 +84,71 @@ body {
 
 .calendar .event .event-description {
   font-weight: normal;
+}
+
+/* modal styles */
+.fade {
+  opacity: 0;
+  -webkit-transition: opacity .2s ease;
+  transition: opacity .2s ease;
+}
+
+.fade.in {
+  opacity: 1;
+}
+
+.modal-backdrop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0,0,0,.5);
+}
+
+.modal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  text-align: left;
+}
+
+.modal-dialog {
+  margin: 30px auto;
+  max-width: 600px;
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+}
+
+.fade .modal-dialog {
+  -webkit-transform: translate(0,-25%);
+  transform: translate(0,-25%);
+}
+
+.in .modal-dialog {
+  -webkit-transform: translate(0,0);
+  transform: translate(0,0);
+}
+
+.modal-content {
+  padding: 20px;
+  background: #fff;
+  color: #222;
+}
+
+.modal-header {
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.modal-footer {
+  padding-top: 15px;
+  margin-top: 15px;
+  border-top: 1px solid #F5F5F5;
 }
