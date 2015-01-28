@@ -71,6 +71,11 @@ table {
   border-style: solid;
 }
 
+.calendar .event.blue {
+  border-color: #1587BD;
+  background-color: #9FC6E7;
+}
+
 .calendar .event.overlapping {
   outline: 2px solid #fff;
 }
