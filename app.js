@@ -1,9 +1,10 @@
-
 var app = angular.module('app', ['ui.bootstrap']);
 
 app.controller('mainCtrl', function ($scope, $modal) {
   $scope.timeLabels = _.range(1, 12);
   $scope.timeLabels.unshift(12);
+  var startOfDay = moment().startOf('day').unix();
+  var endOfDay = moment().endOf('day').unix()
 
   //remove when done:
   window.$scope = $scope;
@@ -52,18 +53,58 @@ app.controller('mainCtrl', function ($scope, $modal) {
     });
   }
 
+  function getTimeYPosition(timestamp) {
+    return Math.round((timestamp - startOfDay) / (endOfDay - startOfDay) * 961);
+  }
+
   function calculateStyles() {
     _.each($scope.events, function (event) {
+      var top = getTimeYPosition(event.startTime);
+      var bottom = getTimeYPosition(event.endTime);
+      var width = (3 - event.colIndex) / 3 * 100;
+      if (event.overlapped) {
+        width *= 0.85;
+      }
       event.style = {
         left: event.colIndex / 3 * 100 + '%',
-        width: (3 - event.colIndex) / 3 * 100 + '%'
+        width: width + '%',
+        top: top + 'px',
+        height: bottom - top + 'px',
       };
+      event.classes = _.pick(event, 'overlapping');
+    });
+  }
+
+  function testOverlapped(a, b) {
+    if (a.startTime < b.endTime && a.endTime > b.startTime) {
+      a.overlapped = true;
+      b.overlapping = true;
+    }
+  }
+
+  function getNextColumn(event) {
+    return _.where($scope.events, {colIndex: event.colIndex + 1});
+  }
+
+  function calculateOverlaps() {
+    _.each($scope.events, function (e) {
+      e.overlapped = false;
+      e.overlapping = false;
+    });
+    _.each($scope.events, function (a) {
+      _.each(getNextColumn(a), function (b) {
+        if (a.startTime < b.endTime && a.endTime > b.startTime) {
+          a.overlapped = true;
+          b.overlapping = true;
+        }
+      });
     });
   }
 
   $scope.reflow = function() {
     sortEvents();
     $scope.columnCount = calculateColumnIndexes();
+    calculateOverlaps();
     calculateStyles();
   };
 

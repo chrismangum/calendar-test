@@ -77,7 +77,7 @@ table {
 }
 
 .calendar .event.overlapping {
-  outline: 2px solid #fff;
+  outline: 1px solid #fff;
 }
 
 .calendar .event p {

@@ -18,7 +18,7 @@
               <div class="time-label" ng-repeat="time in timeLabels">{{ time }}pm</div>
             </td>
             <td class="events-container">
-              <div ng-repeat="e in events" class="event {{ e.color }}" style="height: 100px" ng-style="e.style">
+              <div ng-repeat="e in events" class="event {{ e.color }}" ng-class="e.classes" ng-style="e.style">
                 <p>{{ e.startTime | formatTime }} - {{ e.endTime | formatTime }}</p>
                 <p>{{ e.title }}</p>
                 <p class="event-description">{{ e.description }}</p>
