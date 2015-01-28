@@ -41,12 +41,12 @@ app.controller('mainCtrl', function ($scope, $modal) {
     return val;
   }
 
-  function sortEvents() {
+  function sortEvents(field1, field2) {
     $scope.events.sort(function(a, b) {
-      if (a.startTime !== b.startTime) {
-        return compare(a.startTime, b.startTime);
+      if (a[field1] !== b[field1]) {
+        return compare(a[field1], b[field1]);
       }
-      return compare(a.duration, b.duration, true);
+      return compare(a[field2], b[field2], true);
     });
   }
 
@@ -102,14 +102,6 @@ app.controller('mainCtrl', function ($scope, $modal) {
     });
   }
 
-  $scope.reflow = function() {
-    var columnCount;
-    sortEvents();
-    columnCount = calculateColumnIndexes();
-    calculateOverlaps();
-    calculateStyles(columnCount);
-  };
-
   function timeObjectToUnix(timeObj) {
     return moment(timeObj.hour + ':'+ timeObj.minute + timeObj.meridiem, 'hh:mma').unix();
   }
@@ -121,6 +113,15 @@ app.controller('mainCtrl', function ($scope, $modal) {
       meridiem: time.format('A')
     }
   }
+
+  $scope.reflow = function() {
+    var columnCount;
+    sortEvents('startTime', 'duration');
+    columnCount = calculateColumnIndexes();
+    sortEvents('colIndex', 'startTime');
+    calculateOverlaps();
+    calculateStyles(columnCount);
+  };
 
   $scope.addEvent = function() {
     $modal.open({
@@ -149,15 +150,17 @@ app.controller('mainCtrl', function ($scope, $modal) {
           var event = _.pick($scope.eventForm, 'title', 'description');
           event.startTime = timeObjectToUnix($scope.eventForm.startTime);
           event.endTime = timeObjectToUnix($scope.eventForm.endTime);
-          event.duration = event.endTime - event.startTime;
-          event.color = 'blue';
-          if (!event.title) {
-            event.title = '(no title)';
-          }
           if (event.startTime < event.endTime) {
+            event.duration = event.endTime - event.startTime;
+            event.color = 'blue';
+            if (!event.title) {
+              event.title = '(no title)';
+            }
             $scope.events.push(event);
             $scope.reflow();
             $scope.$close();
+          } else {
+            $scope.endTimeError = true;
           }
         };
       }

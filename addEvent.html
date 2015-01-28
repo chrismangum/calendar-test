@@ -22,7 +22,7 @@
               </select>
             </td>
           </tr>
-          <tr>
+          <tr ng-class="{error: endTimeError}">
             <td class="label">End Time</td>
             <td>
               <select ng-model="eventForm.endTime.hour">
