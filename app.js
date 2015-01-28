@@ -136,10 +136,21 @@ app.controller('mainCtrl', function ($scope, $modal) {
 
   $scope.reflow();
 
-  $scope.addEvent = function() {
+  $scope.editEvent = $scope.addEvent = function(event) {
     $modal.open({
-      templateUrl: 'addEvent.html'
-    });
+      templateUrl: 'addEvent.html',
+      controller: function ($scope) {
+        $scope.hours = _.range(1, 12);
+        $scope.hours.unshift(12);
+        $scope.minutes = _.map(_.range(0, 60), function (time) {
+          time = time.toString();
+          if (time.length === 1) {
+            return '0' + time;
+          }
+          return time;
+        });
+      }
+    }).then(function () {});
   };
 });
 

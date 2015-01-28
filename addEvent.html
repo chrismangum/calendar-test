@@ -3,8 +3,52 @@
     Edit Event
   </div>
   <div class="modal-body">
-    <table>
-    </table>
+    <form class="event-editor">
+      <table>
+        <tbody>
+          <tr>
+            <td class="label">Start Time</td>
+            <td>
+              <select>
+                <option ng-repeat="h in hours" ng-bind="h"></option>
+              </select>
+              :
+              <select>
+                <option ng-repeat="m in minutes" ng-bind="m"></option>
+              </select>
+              <select>
+                <option>AM</option>
+                <option>PM</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">End Time</td>
+            <td>
+              <select>
+                <option ng-repeat="h in hours" ng-bind="h"></option>
+              </select>
+              :
+              <select>
+                <option ng-repeat="m in minutes" ng-bind="m"></option>
+              </select>
+              <select>
+                <option>AM</option>
+                <option>PM</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class="label">Title</td>
+            <td><input type="text"></td>
+          </tr>
+          <tr>
+            <td class="label">Description</td>
+            <td><textarea /></td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
   </div>
   <div class="modal-footer clearfix">
     <div class="pull-left">
