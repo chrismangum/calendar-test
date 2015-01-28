@@ -4,9 +4,7 @@ app.controller('mainCtrl', function ($scope, $modal) {
   var containerHeight = $('.events-container').height();
   var startOfDay = moment().startOf('day').unix();
   var endOfDay = moment().endOf('day').unix()
-
-  //remove when done:
-  window.$scope = $scope;
+  $scope.events = [];
 
   function getNextEvent(currentEvent, events) {
     return _.find(events, function (event) {
@@ -56,19 +54,23 @@ app.controller('mainCtrl', function ($scope, $modal) {
     return Math.round((timestamp - startOfDay) / (endOfDay - startOfDay) * containerHeight);
   }
 
-  function calculateStyles() {
+  function calculateStyles(columnCount) {
     _.each($scope.events, function (event) {
       var top = getTimeYPosition(event.startTime);
       var bottom = getTimeYPosition(event.endTime);
-      var width = (3 - event.colIndex) / 3 * 100;
+      var width = (columnCount - event.colIndex) / columnCount * 100;
+      var height = bottom - top;
+      if (height < 5) {
+        height = 5;
+      }
       if (event.overlapped) {
         width *= 0.85;
       }
       event.style = {
-        left: event.colIndex / 3 * 100 + '%',
+        left: event.colIndex / columnCount * 100 + '%',
         width: width + '%',
         top: top + 'px',
-        height: bottom - top + 'px',
+        height: height + 'px',
       };
       event.classes = _.pick(event, 'overlapping');
     });
@@ -101,47 +103,35 @@ app.controller('mainCtrl', function ($scope, $modal) {
   }
 
   $scope.reflow = function() {
+    var columnCount;
     sortEvents();
-    $scope.columnCount = calculateColumnIndexes();
+    columnCount = calculateColumnIndexes();
     calculateOverlaps();
-    calculateStyles();
+    calculateStyles(columnCount);
   };
 
-  $scope.events = [
-    {
-      title: 'Cool event',
-      startTime: 1422387657,
-      endTime: 1422402032,
-      duration: 14375,
-      color: 'blue',
-      description: 'Cool Description'
-    },
-    {
-      title: 'Cool event 2',
-      startTime: 1422377762,
-      endTime: 1422392175,
-      duration: 14413,
-      color: 'blue',
-      description: 'Cool Description 2'
-    },
-    {
-      title: 'Cool event 3',
-      startTime: 1422387657,
-      endTime: 1422392175,
-      duration: 4518,
-      color: 'blue',
-      description: 'Cool Description 3'
-    },
-  ];
+  function timeObjectToUnix(timeObj) {
+    return moment(timeObj.hour + ':'+ timeObj.minute + timeObj.meridiem, 'hh:mma').unix();
+  }
 
-  $scope.reflow();
+  function getTimeObject(time) {
+    return {
+      hour: time.format('h'),
+      minute: time.format('mm'),
+      meridiem: time.format('A')
+    }
+  }
 
-  $scope.editEvent = $scope.addEvent = function(event) {
+  $scope.addEvent = function() {
     $modal.open({
       templateUrl: 'addEvent.html',
+      scope: $scope,
       controller: function ($scope) {
-        $scope.hours = _.range(1, 12);
-        $scope.hours.unshift(12);
+        var endTime = moment().add(1, 'hour');
+        var eod = moment().endOf('day');
+
+        $scope.hours = _.invoke(_.range(1, 12), 'toString');
+        $scope.hours.unshift('12');
         $scope.minutes = _.map(_.range(0, 60), function (time) {
           time = time.toString();
           if (time.length === 1) {
@@ -149,8 +139,29 @@ app.controller('mainCtrl', function ($scope, $modal) {
           }
           return time;
         });
+
+        $scope.eventForm = {
+          startTime: getTimeObject(moment()),
+          endTime: getTimeObject(endTime.isBefore(eod) ? endTime : eod)
+        };
+
+        $scope.submit = function () {
+          var event = _.pick($scope.eventForm, 'title', 'description');
+          event.startTime = timeObjectToUnix($scope.eventForm.startTime);
+          event.endTime = timeObjectToUnix($scope.eventForm.endTime);
+          event.duration = event.endTime - event.startTime;
+          event.color = 'blue';
+          if (!event.title) {
+            event.title = '(no title)';
+          }
+          if (event.startTime < event.endTime) {
+            $scope.events.push(event);
+            $scope.reflow();
+            $scope.$close();
+          }
+        };
       }
-    }).then(function () {});
+    });
   };
 });
 

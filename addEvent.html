@@ -1,6 +1,6 @@
 <div>
   <div class="modal-header">
-    Edit Event
+    Add Event
   </div>
   <div class="modal-body">
     <form class="event-editor">
@@ -9,14 +9,14 @@
           <tr>
             <td class="label">Start Time</td>
             <td>
-              <select>
-                <option ng-repeat="h in hours" ng-bind="h"></option>
+              <select ng-model="eventForm.startTime.hour">
+                <option ng-repeat="h in hours">{{h}}</option>
               </select>
               :
-              <select>
-                <option ng-repeat="m in minutes" ng-bind="m"></option>
+              <select ng-model="eventForm.startTime.minute">
+                <option ng-repeat="m in minutes">{{m}}</option>
               </select>
-              <select>
+              <select ng-model="eventForm.startTime.meridiem">
                 <option>AM</option>
                 <option>PM</option>
               </select>
@@ -25,14 +25,14 @@
           <tr>
             <td class="label">End Time</td>
             <td>
-              <select>
-                <option ng-repeat="h in hours" ng-bind="h"></option>
+              <select ng-model="eventForm.endTime.hour">
+                <option ng-repeat="h in hours">{{h}}</option>
               </select>
               :
-              <select>
-                <option ng-repeat="m in minutes" ng-bind="m"></option>
+              <select ng-model="eventForm.endTime.minute">
+                <option ng-repeat="m in minutes">{{m}}</option>
               </select>
-              <select>
+              <select ng-model="eventForm.endTime.meridiem">
                 <option>AM</option>
                 <option>PM</option>
               </select>
@@ -40,22 +40,19 @@
           </tr>
           <tr>
             <td class="label">Title</td>
-            <td><input type="text"></td>
+            <td><input ng-model="eventForm.title" type="text"></td>
           </tr>
           <tr>
             <td class="label">Description</td>
-            <td><textarea /></td>
+            <td><textarea ng-model="eventForm.description" /></td>
           </tr>
         </tbody>
       </table>
     </form>
   </div>
   <div class="modal-footer clearfix">
-    <div class="pull-left">
-      <button>Delete</button>
-    </div>
     <div class="pull-right">
-      <button ng-click="$close()">Save</button>
+      <button ng-click="submit()">Save</button>
       <button ng-click="$dismiss()">Cancel</button>
     </div>
   </div>

@@ -69,6 +69,7 @@ table {
   position: absolute;
   border-width: 1px;
   border-style: solid;
+  overflow: hidden;
 }
 
 .calendar .event.blue {
