@@ -3,7 +3,7 @@ var app = angular.module('app', ['ui.bootstrap']);
 app.controller('mainCtrl', function ($scope, $modal) {
   var containerHeight = $('.events-container').height();
   var startOfDay = moment().startOf('day').unix();
-  var endOfDay = moment().endOf('day').unix()
+  var endOfDay = moment().endOf('day').unix();
   $scope.events = [];
 
   function getNextEvent(currentEvent, events) {
@@ -74,13 +74,6 @@ app.controller('mainCtrl', function ($scope, $modal) {
       };
       event.classes = _.pick(event, 'overlapping');
     });
-  }
-
-  function testOverlapped(a, b) {
-    if (a.startTime < b.endTime && a.endTime > b.startTime) {
-      a.overlapped = true;
-      b.overlapping = true;
-    }
   }
 
   function getNextColumn(event) {
