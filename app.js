@@ -1,8 +1,7 @@
 var app = angular.module('app', ['ui.bootstrap']);
 
 app.controller('mainCtrl', function ($scope, $modal) {
-  $scope.timeLabels = _.range(1, 12);
-  $scope.timeLabels.unshift(12);
+  var containerHeight = $('.events-container').height();
   var startOfDay = moment().startOf('day').unix();
   var endOfDay = moment().endOf('day').unix()
 
@@ -54,7 +53,7 @@ app.controller('mainCtrl', function ($scope, $modal) {
   }
 
   function getTimeYPosition(timestamp) {
-    return Math.round((timestamp - startOfDay) / (endOfDay - startOfDay) * 961);
+    return Math.round((timestamp - startOfDay) / (endOfDay - startOfDay) * containerHeight);
   }
 
   function calculateStyles() {
