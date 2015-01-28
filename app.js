@@ -41,12 +41,12 @@ app.controller('mainCtrl', function ($scope, $modal) {
     return val;
   }
 
-  function sortEvents(field1, field2) {
+  function sortEvents(field1, field2, reverse) {
     $scope.events.sort(function(a, b) {
       if (a[field1] !== b[field1]) {
         return compare(a[field1], b[field1]);
       }
-      return compare(a[field2], b[field2], true);
+      return compare(a[field2], b[field2], reverse);
     });
   }
 
@@ -116,7 +116,7 @@ app.controller('mainCtrl', function ($scope, $modal) {
 
   $scope.reflow = function() {
     var columnCount;
-    sortEvents('startTime', 'duration');
+    sortEvents('startTime', 'duration', true);
     columnCount = calculateColumnIndexes();
     sortEvents('colIndex', 'startTime');
     calculateOverlaps();
