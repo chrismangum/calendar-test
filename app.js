@@ -1,9 +1,10 @@
 var app = angular.module('app', ['ui.bootstrap']);
 
 app.controller('mainCtrl', function ($scope, $modal) {
+  var _ = window._;
   var containerHeight = $('.events-container').height();
-  var startOfDay = moment().startOf('day').unix();
   var endOfDay = moment().endOf('day').unix();
+  var startOfDay = moment().startOf('day').unix();
   $scope.events = [];
 
   function getNextEvent(currentEvent, events) {
@@ -86,8 +87,7 @@ app.controller('mainCtrl', function ($scope, $modal) {
 
   function calculateOverlaps() {
     _.each($scope.events, function (e) {
-      e.overlapped = false;
-      e.overlapping = false;
+      _.omit(e, 'overlapped', 'overlapping');
     });
     _.each($scope.events, function (a) {
       _.each(getNextColumn(a), function (b) {
@@ -108,7 +108,7 @@ app.controller('mainCtrl', function ($scope, $modal) {
       hour: time.format('h'),
       minute: time.format('mm'),
       meridiem: time.format('A')
-    }
+    };
   }
 
   $scope.reflow = function() {
