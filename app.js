@@ -76,8 +76,12 @@ app.controller('mainCtrl', function ($scope, $modal) {
     });
   }
 
+  var getColumnAtIndex = _.memoize(function (index) {
+    return _.where($scope.events, {colIndex: index});
+  });
+
   function getNextColumn(event) {
-    return _.where($scope.events, {colIndex: event.colIndex + 1});
+    return getColumnAtIndex(event.colIndex + 1);
   }
 
   function calculateOverlaps() {
@@ -114,6 +118,7 @@ app.controller('mainCtrl', function ($scope, $modal) {
     sortEvents('colIndex', 'startTime');
     calculateOverlaps();
     calculateStyles(columnCount);
+    getColumnAtIndex.cache = {};
   };
 
   $scope.addEvent = function() {
